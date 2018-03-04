@@ -1,16 +1,42 @@
-#### 433Mhz RF Wireless Power Outlets
+####433MHz RF power outlet control
 
-Have you ever wanted to wirelessly control power outlets from your phone using a Raspberry Pi? 
+Slightly modified from the original version:
 
-**Blog Post:** [TimLeland.com/wireless-power-outlets](https://timleland.com/wireless-power-outlets/)
+* Can be used offline (Bootstrap and jQuery files are stored locally)
+* Dark theme for web page
+* Web app compatible (adds a shortcut to your home screen, removes browser controls)
 
-Voice Control Outlets (Follow up Guides)
-* [Siri using HomeBridge](https://timleland.com/use-siri-to-control-wireless-power-outlets-homebridge/)
-* [Google Home](https://timleland.com/use-google-home-to-control-wireless-power-outlets/)
-* [Amazon Echo](https://timleland.com/use-amazon-echo-to-control-wireless-power-outlets/)
+**Some setup steps:** 
 
-![Screenshot](http://i0.wp.com/timleland.com/wp-content/uploads/2014/12/15721754859_1301df94c1_o-e1417497266426-225x300.jpg?resize=225%2C300)
+Connect the transmitter module/breadboard to the Pi like this:
+* GND (left pin near coil) = Ground
+* GPIO (center pin) -> GPIO #17 (also known as GPIO #0)
+* VCC (right pin) -> 5 volts
 
+Connect the receiver module (only necessary to capture the RF codes from the remote):
 
-[Featured in Wired Magazine](http://www.wired.co.uk/magazine/archive/2016/05/how-to/raspberry-pi-power-outlets-tutorial)
-![Screenshot](https://i1.wp.com/timleland.com/wp-content/uploads/2014/12/Wired.jpg?zoom=2&resize=750%2C410&ssl=1)
+* VCC (left pin) -> +5VDC
+* DATA (2nd pin from left) -> GPIO 21/27
+* GND (far right pin) -> Ground
+
+To set up the software on the Pi:
+
+```
+sudo apt-get install apache2 php5 libapache2-mod-php5 -y
+git clone https://github.com/800wheelbarrow/rfoutlet.git /var/www/html/rfoutlet
+sudo chown root.root /var/www/html/rfoutlet/codesend
+sudo chmod 4755 /var/www/html/rfoutlet/codesend
+```
+
+To capture the RF codes, run the following program and press the remote buttons:
+```
+sudo /var/www/html/rfoutlet/RFSniffer
+```
+
+Edit /var/www/html/rfoutlet/toggle.php with the codes displayed from the last step.
+
+To manually send codes (for testing purposes), run:
+
+```
+sudo /var/www/html/rfoutlet/codesend 5575987
+```
