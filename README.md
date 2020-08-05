@@ -22,6 +22,7 @@ Connect the receiver module (only necessary to capture the RF codes from the rem
 To set up the software on the Pi:
 
 ```
+sudo apt-get install wiringpi
 sudo apt-get install apache2 php5 libapache2-mod-php5 -y
 git clone https://github.com/800wheelbarrow/rfoutlet.git /var/www/html/rfoutlet
 sudo chown root.root /var/www/html/rfoutlet/codesend
